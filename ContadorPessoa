@@ -1,1 +1,99 @@
 
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MaterialApp(
+      // executa o app
+      title: "Contador de Pessoas",
+      home: Home()));
+}
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+// stfu + tab completa o statefull , alteração do estado da tela
+class _HomeState extends State<Home> {
+  // _people , não acessa a variavel fora da classe _HomeState
+  int _people = 0;
+  String _infoText = "Pode Entrar!";
+  // altera o estado da tela
+  void _changePeople(int delta) {
+    setState(() {
+      _people += delta;
+      // altera o texto inferior condicional
+      if (_people < 0) {
+        _infoText = "Mundo invertido?!";
+      } else if (_people <= 10) {
+        _infoText = "Pode Entrar!";
+      } else {
+        _infoText = "Lotado!";
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // stack fundo que seria a imagem
+    return Stack(
+      children: <Widget>[
+        Image.asset(
+          "images/restaurant.jpg",
+          fit: BoxFit.cover,
+          height: 1000.0,
+        ),
+        // Coluna children do Stack
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "Pessoas: $_people", // exibe o contador atual $_people
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+            // Linha para colocar os objetos na horizontal
+            // a estrutura e a mesma da coluna, children.....
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // children um ou vario filhos da row
+              children: <Widget>[
+                // Padding é filho do row
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  // child apenas um filho do Padding
+                  child: FlatButton(
+                    // child apenas um filho do child FlatButton
+                    child: Text(
+                      "+1",
+                      style: TextStyle(fontSize: 40.0, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      _changePeople(1);
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: FlatButton(
+                    child: Text(
+                      "-1",
+                      style: TextStyle(fontSize: 40.0, color: Colors.white),
+                    ),
+                    onPressed: () {
+                      _changePeople(-1);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Text(
+              _infoText,
+              style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic, fontSize: 30.0),
+            )
+          ],
+        )
+      ],
+    );
+  }
+}
